@@ -1,3 +1,4 @@
 #!/usr/bin/env ruby
 
-StockInfo::CLI.call.new
+require './lib/stock_info'
+StockInfo::CLI.new.call
