@@ -30,7 +30,7 @@ class StockInfo::Stock
         end
     end
     def print_info
-        puts "#{self.company} - 24hr Change: #{self.daily_change} - Price: #{self.price} - Earnings date: #{self.earnings} - Relative Volume: #{self.rvol}"
+        puts "#{self.company} - 24hr Change: #{self.daily_change} - Relative Volume: #{self.rvol} - Price: #{self.price} - Earnings date: #{self.earnings}"
     end
     def print_trending
         puts "#{self.symbol} - 24hr Change: #{self.daily_change} - Relative Volume: #{self.rvol}"
