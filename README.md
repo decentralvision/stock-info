@@ -4,7 +4,7 @@ StockInfo is a gem that gets different information on a stock including recent n
 
 ## Installation
     Get and install dependencies with:
-    $ bundle
+    $ bundle install
     Then run:
     $ gem install stock_info
 
