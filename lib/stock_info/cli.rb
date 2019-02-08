@@ -7,15 +7,13 @@ class StockInfo::CLI
     end
     def trending_tickers
         puts "Loading today's trending stocks..."
-        StockInfo::Stock.trending.each do |stock|
-            stock.print_trending
-        end
+        StockInfo::Stock.print_trending
     end
     def menu
         input = nil
         while input != 'exit'
             puts "Enter the ticker symbol of a stock you would like more info on."
-            puts "Other commands: 'exit' - exits stock-info, 'trending' - shows trending stocks"
+            puts "Other commands: 'exit' - exits stock-info, 'trending' - shows trending stocks."
             input = gets.strip.downcase
             if input == 'trending'
                 trending_tickers

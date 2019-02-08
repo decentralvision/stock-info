@@ -1,5 +1,5 @@
 class StockInfo::Stock
-    attr_accessor :company, :symbol, :daily_change, :price, :news, :earnings, :rvol
+    attr_accessor :company, :symbol, :daily_change, :price, :news, :earnings, :rvol, :optionable, :short_ratio
     def initialize(symbol)
         @symbol = symbol
         self.get_info(symbol)
@@ -14,10 +14,12 @@ class StockInfo::Stock
     end
     def get_info(symbol)
         doc = Nokogiri::HTML(open("https://finviz.com/quote.ashx?t=#{symbol}"))
-        self.company = doc.css('table.fullview-title a.tab-link b').text
+        self.company = doc.css('table.fullview-title tr')[1].text
         self.rvol = doc.css("table.snapshot-table2 td.snapshot-td2")[-14].text 
         self.daily_change = doc.css("table.snapshot-table2 td.snapshot-td2")[-1].text
         self.price = doc.css("table.snapshot-table2 td.snapshot-td2")[-7].text
+        self.optionable = doc.css("table.snapshot-table2 td.snapshot-td2")[-18].text 
+        self.short_ratio = doc.css("table.snapshot-table2 td.snapshot-td2")[22].text
         self.earnings = doc.css("table.snapshot-table2 td.snapshot-td2")[-10].text 
         if self.earnings == '-'
             self.earnings = "None (ETF)"
@@ -30,10 +32,12 @@ class StockInfo::Stock
         end
     end
     def print_info
-        puts "#{self.company} - 24hr Change: #{self.daily_change} - Relative Volume: #{self.rvol} - Price: #{self.price} - Earnings date: #{self.earnings}"
+        puts "#{self.company} - Price: #{self.price} - Change: #{self.daily_change} - Relative Volume: #{self.rvol} - Earnings Date: #{self.earnings} - Optionable: #{self.optionable} - Short Ratio: #{self.short_ratio}"
     end
-    def print_trending
-        puts "#{self.symbol} - 24hr Change: #{self.daily_change} - Relative Volume: #{self.rvol}"
+    def self.print_trending
+        self.trending.each do |stock|
+            puts "#{stock.symbol} - Price: #{stock.price} - Change: #{stock.daily_change} - Relative Volume: #{stock.rvol}"
+        end        
     end
     def self.trending
         trending = []

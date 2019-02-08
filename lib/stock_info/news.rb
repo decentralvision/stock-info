@@ -18,13 +18,13 @@ class StockInfo::Stock::News
     end
     def self.news_menu(stock)
         input = nil
-        while input != 'menu'
+        while input != 'menu' && input != 'exit'
             stock.print_news
             puts "Enter the number of an article you would like to open in your web browser, or 'menu' to return to the main menu"
             input = gets.strip
             if input.to_i > 0 && input.to_i <= 10
                 self.open_url(stock.news[(input.to_i) -1].link)
-            elsif input.downcase != 'menu'
+            elsif input.downcase != 'menu' && input.downcase != 'exit'
                 puts "Enter the number of an article or 'menu'"
             end
         end
