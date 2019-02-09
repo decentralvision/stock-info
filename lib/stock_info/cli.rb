@@ -24,9 +24,7 @@ class StockInfo::CLI
         stock.print_info
         puts 'View recent news articles related to this stock? (yes/no)'
         news_bool = gets.strip[0].downcase
-        if news_bool == 'y'
-            input = StockInfo::News.news_menu(stock) 
-        end
+        input = StockInfo::News.news_menu(stock) if news_bool == 'y'
       elsif input != 'exit'
         puts 'Please input a command or ticker symbol'
       end

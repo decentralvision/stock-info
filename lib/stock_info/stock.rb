@@ -44,15 +44,15 @@ class StockInfo::Stock
   end
 
   def self.trending
-    time = Time.now.localtime("-05:00")
+    time = Time.now.localtime('-05:00')
     unless (time.saturday? || time.sunday? || time.hour > 20 || time.hour < 4) && @@trending.any?
-        i = 0
-        doc = Nokogiri::HTML(open('https://finviz.com/screener.ashx?v=110&s=ta_mostactive'))
-        10.times do
+      i = 0
+      doc = Nokogiri::HTML(open('https://finviz.com/screener.ashx?v=110&s=ta_mostactive'))
+      10.times do
         symbol = doc.css('tr.table-dark-row-cp a.screener-link-primary')[i].text
         i += 1
         @@trending << new(symbol)
-        end
+      end
     end
     @@trending
   end

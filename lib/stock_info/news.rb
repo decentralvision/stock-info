@@ -7,7 +7,7 @@ class StockInfo::News
     doc = Nokogiri::HTML(open("https://finviz.com/quote.ashx?t=#{symbol}"))
     i = 0
     10.times do
-      article = self.new
+      article = new
       article.symbol = symbol
       sources = doc.css('table#news-table.fullview-news-outer tr span') - doc.css('table#news-table.fullview-news-outer tr span.body-table-news-gain')
       article.title = doc.css('table#news-table.fullview-news-outer tr')[i].css('.tab-link-news').text
@@ -26,13 +26,11 @@ class StockInfo::News
       input = gets.strip
       if input.to_i > 0 && input.to_i <= 10
         open_url(stock.news[input.to_i - 1].link)
-      elsif input.downcase == 'refresh'
+      elsif input.casecmp('refresh').zero?
         stock.print_news
       end
     end
-    if input == 'exit'
-      'exit'
-    end
+    'exit' if input == 'exit'
   end
 
   def self.open_url(link)
