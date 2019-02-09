@@ -1,4 +1,4 @@
-gem 'stock_info'
+
 source "https://rubygems.org"
 
 git_source(:github) {|repo_name| "https://github.com/decentralvision/stock_info" }
