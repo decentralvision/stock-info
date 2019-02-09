@@ -22,7 +22,7 @@ class StockInfo::News
     input = nil
     stock.print_news
     while input != 'menu' && input != 'exit'
-      puts "Enter the number of an article you would like to open in your web browser, 'menu' to return to the main menu, or 'refresh' to check for recent news"
+      puts "Enter the number of an article you would like to open in your web browser, 'menu' to return to the main menu, 'refresh' to check for recent news, or 'exit' to exit."
       input = gets.strip
       if input.to_i > 0 && input.to_i <= 10
         open_url(stock.news[input.to_i - 1].link)
