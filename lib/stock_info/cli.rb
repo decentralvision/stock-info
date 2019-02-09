@@ -15,7 +15,7 @@ class StockInfo::CLI
     input = nil
     while input != 'exit'
       puts 'Enter the ticker symbol of a stock you would like more info on.'
-      puts "Other commands: 'exit' - exits stock-info, 'trending' - shows trending stocks."
+      puts "Other commands: 'exit' - exits stock-info, 'trending' - refresh trending stocks."
       input = gets.strip.downcase
       if input == 'trending'
         trending_tickers
