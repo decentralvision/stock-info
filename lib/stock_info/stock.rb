@@ -1,5 +1,6 @@
 class StockInfo::Stock
   attr_accessor :company, :symbol, :daily_change, :price, :news, :earnings, :rvol, :optionable, :short_ratio
+  @@trending = []
   def initialize(symbol)
     @symbol = symbol
     @news = []
@@ -43,14 +44,16 @@ class StockInfo::Stock
   end
 
   def self.trending
-    trending = []
-    i = 0
-    doc = Nokogiri::HTML(open('https://finviz.com/screener.ashx?v=110&s=ta_mostactive'))
-    10.times do
-      symbol = doc.css('tr.table-dark-row-cp a.screener-link-primary')[i].text
-      i += 1
-      trending << new(symbol)
+    time = Time.now.localtime("-05:00")
+    unless (time.saturday? || time.sunday? || time.hour > 20 || time.hour < 4) && @@trending.any?
+        i = 0
+        doc = Nokogiri::HTML(open('https://finviz.com/screener.ashx?v=110&s=ta_mostactive'))
+        10.times do
+        symbol = doc.css('tr.table-dark-row-cp a.screener-link-primary')[i].text
+        i += 1
+        @@trending << new(symbol)
+        end
     end
-    trending
+    @@trending
   end
 end
