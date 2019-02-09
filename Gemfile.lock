@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    stock_info (0.1.0)
-      nokogiri
+    stock_info (0.1.1)
+      nokogiri (~> 1.10)
 
 GEM
   remote: https://rubygems.org/
@@ -22,7 +22,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.16)
-  pry
+  pry (~> 0.12)
   rake (~> 10.0)
   stock_info!
 
