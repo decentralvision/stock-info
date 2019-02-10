@@ -20,7 +20,7 @@ class StockInfo::CLI
       if input == 'trending'
         trending_tickers
       elsif StockInfo::Stock.check_symbol(input.upcase) == true
-        stock = StockInfo::Stock.new(input.upcase)
+        stock = StockInfo::Stock.create_or_return(input.upcase)
         stock.print_info
         puts 'View recent news articles related to this stock? (yes/no)'
         news_bool = gets.strip[0].downcase

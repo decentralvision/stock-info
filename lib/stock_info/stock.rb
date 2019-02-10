@@ -1,10 +1,31 @@
 class StockInfo::Stock
   attr_accessor :company, :symbol, :daily_change, :price, :news, :earnings, :rvol, :optionable, :short_ratio
   @@trending = []
+  @@all = []
   def initialize(symbol)
     @symbol = symbol
     @news = []
     get_info(symbol)
+    @@all << self
+  end
+
+  def self.create_or_return(symbol)
+    if self.market_open || @@all.any? {|stock| stock.symbol == symbol}
+      if self.market_open
+        stock = @@all.select {|stock| stock.symbol == symbol }[0]
+        stock.get_info(symbol)
+        stock
+      else
+        stock = @@all.select {|stock| stock.symbol == symbol}[0]
+      end
+    else
+      self.new(symbol)
+    end
+  end
+
+  def self.market_open
+    time = Time.now.localtime('-05:00')
+    (time.saturday? || time.sunday? || time.hour > 20 || time.hour < 4) ? false : true
   end
 
   def self.check_symbol(symbol)
@@ -38,20 +59,19 @@ class StockInfo::Stock
   end
 
   def self.print_trending
-    trending.each do |stock|
+    self.trending.each do |stock|
       puts "#{stock.symbol} - Price: #{stock.price} - Change: #{stock.daily_change} - Relative Volume: #{stock.rvol}"
     end
   end
 
   def self.trending
-    time = Time.now.localtime('-05:00')
-    unless (time.saturday? || time.sunday? || time.hour > 20 || time.hour < 4) && @@trending.any?
+    if self.market_open || @@trending.empty?
       i = 0
       doc = Nokogiri::HTML(open('https://finviz.com/screener.ashx?v=110&s=ta_mostactive'))
       10.times do
         symbol = doc.css('tr.table-dark-row-cp a.screener-link-primary')[i].text
         i += 1
-        @@trending << new(symbol)
+        @@trending << self.create_or_return(symbol)
       end
     end
     @@trending
