@@ -1,6 +1,5 @@
 class StockInfo::Stock
   attr_accessor :company, :symbol, :daily_change, :price, :news, :earnings, :rvol, :optionable, :short_ratio
-  @@trending = []
   @@all = []
   def initialize(symbol)
     @symbol = symbol
@@ -10,7 +9,7 @@ class StockInfo::Stock
   end
 
   def self.create_or_return(symbol)
-    if self.market_open || @@all.any? {|stock| stock.symbol == symbol}
+    if self.market_open && @@all.any? {|stock| stock.symbol == symbol}
       if self.market_open
         stock = @@all.select {|stock| stock.symbol == symbol }[0]
         stock.get_info(symbol)
@@ -59,21 +58,9 @@ class StockInfo::Stock
   end
 
   def self.print_trending
-    self.trending.each do |stock|
+    StockInfo::Scraper.trending.each do |stock|
       puts "#{stock.symbol} - Price: #{stock.price} - Change: #{stock.daily_change} - Relative Volume: #{stock.rvol}"
     end
   end
 
-  def self.trending
-    if self.market_open || @@trending.empty?
-      i = 0
-      doc = Nokogiri::HTML(open('https://finviz.com/screener.ashx?v=110&s=ta_mostactive'))
-      10.times do
-        symbol = doc.css('tr.table-dark-row-cp a.screener-link-primary')[i].text
-        i += 1
-        @@trending << self.create_or_return(symbol)
-      end
-    end
-    @@trending
-  end
 end
